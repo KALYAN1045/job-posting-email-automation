@@ -42,9 +42,10 @@
 .register-info p {
   color: #585858;
   line-height: 1.6;
+  font-size: medium;
   font-weight: 450;
   margin: 0;
-  max-width: 90%;
+  max-width: 80%;
 }
 
 @media (min-width: 800px) {

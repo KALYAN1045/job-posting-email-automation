@@ -1,0 +1,54 @@
+.navbar {
+  position: relative;
+  top: 30px;
+  left: 40px;
+  width: calc(100% - 120px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.navbar-logo {
+  width: 130px;
+  height: 34px;
+}
+
+.navbar-contact {
+  font-size: 1.5rem;
+  color: #576474;
+  font-weight: 500;
+}
+
+/* Register */
+.register-container {
+  margin-top: 100px;
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+}
+
+.register-info {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.register-info p {
+  color: #585858;
+  line-height: 1.6;
+  font-weight: 450;
+  margin: 0;
+  max-width: 90%;
+}
+
+@media (min-width: 800px) {
+  .register-container {
+    gap: 20px;
+  }
+}

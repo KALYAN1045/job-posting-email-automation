@@ -1,0 +1,129 @@
+.register-form {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 450px;
+  max-width: 800px;
+  text-align: center;
+  position: relative;
+}
+
+.register-form::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 10px;
+  padding: 2px;
+  background: linear-gradient(90deg, #3f71ff 0%, #aa54ff 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.register-form h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.title {
+  color: #777;
+  font-weight: 500;
+  margin-bottom: 40px;
+  font-size: 0.75rem;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid #cccccc;
+  background-color: #e1e1e1;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.icon {
+  width: 13px;
+  height: 13px;
+  margin-right: 15px;
+}
+.group {
+  width: 19px;
+  margin-right: 13px;
+}
+
+input {
+  flex: 1;
+  border: none;
+  font-weight: 510;
+  background-color: #e1e1e1;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+button {
+  padding: 8px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.terms {
+  color: #777;
+  font-weight: 800;
+  font-size: 0.8rem;
+  margin: 17px;
+}
+
+.terms a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.terms a:hover {
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .register-container {
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px;
+  }
+
+  .register-info,
+  .register-form-container {
+    width: 100%;
+  }
+
+  .register-form {
+    max-width: none;
+  }
+}
+
+@media (min-width: 800px) {
+  .register-form-container {
+    margin-right: 70px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .register-form-container {
+    margin-right: 100px;
+  }
+}

@@ -20,7 +20,6 @@ function SignUp() {
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // State for loading
 
   const navigate = useNavigate();
 
@@ -50,10 +49,9 @@ function SignUp() {
 
   const handleProceed = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // Set loading to true when OTP request starts
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${process.env.REACT_APP_API_URL}/api/auth/register`,
         {
           name: formData.name,
           phone: formData.phoneNumber,
@@ -70,15 +68,13 @@ function SignUp() {
         err.response ? err.response.data.message : err.message
       );
       alert(err.response.data.message);
-    } finally {
-      setIsLoading(false); // Set loading to false once OTP request completes
     }
   };
 
   const handleVerifyEmailOtp = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/verify-email-otp",
+        `${process.env.REACT_APP_API_URL}/api/auth/verify-email-otp`,
         {
           email: formData.email,
           emailOtp: formData.emailOtp,
@@ -98,7 +94,7 @@ function SignUp() {
   const handleVerifyPhoneOtp = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/verify-phone-otp",
+        `${process.env.REACT_APP_API_URL}/api/auth/verify-phone-otp`,
         {
           phone: formData.phoneNumber,
           phoneOtp: formData.phoneOtp,
@@ -136,7 +132,6 @@ function SignUp() {
               formData={formData}
               handleInputChange={handleInputChange}
               handleProceed={handleProceed}
-              isLoading={isLoading} // Pass loading state to SignUpForm
             />
           </motion.div>
         )}

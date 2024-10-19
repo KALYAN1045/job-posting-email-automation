@@ -1,54 +1,56 @@
-import React, { useState } from 'react';
-import axios from 'axios'; // Import Axios for API requests
+import React, { useState } from "react";
+import axios from "axios"; // Import Axios for API requests
 import "./JobPostingForm.css";
 
 const JobPostingForm = () => {
   const [formData, setFormData] = useState({
-    jobTitle: '',
-    jobDescription: '',
-    experienceLevel: '',
+    jobTitle: "",
+    jobDescription: "",
+    experienceLevel: "",
     candidates: [], // This will now hold an array of candidate emails
-    endDate: '',
+    endDate: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
   const handleCandidateAdd = (email) => {
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
       candidates: [...prevData.candidates, email],
     }));
   };
 
   const handleCandidateRemove = (email) => {
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
-      candidates: prevData.candidates.filter(c => c !== email),
+      candidates: prevData.candidates.filter((c) => c !== email),
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
-      const response = await axios.post('http://localhost:5000/api/jobs', formData); // Adjust the URL as per your backend setup
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/jobs`,
+        formData
+      ); // Adjust the URL as per your backend setup
       console.log(response.data);
       alert("Job created and emails sent!");
 
       setFormData({
-        jobTitle: '',
-        jobDescription: '',
-        experienceLevel: '',
+        jobTitle: "",
+        jobDescription: "",
+        experienceLevel: "",
         candidates: [],
-        endDate: '',
+        endDate: "",
       });
-      
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("There was an error creating the job or sending emails.");
@@ -102,17 +104,19 @@ const JobPostingForm = () => {
             {formData.candidates.map((email) => (
               <div key={email} className="candidate-tag">
                 {email}
-                <span onClick={() => handleCandidateRemove(email)}>&times;</span>
+                <span onClick={() => handleCandidateRemove(email)}>
+                  &times;
+                </span>
               </div>
             ))}
             <input
               type="email"
               placeholder="xyz@gmail.com"
               onKeyPress={(e) => {
-                if (e.key === 'Enter') {
+                if (e.key === "Enter") {
                   e.preventDefault();
                   handleCandidateAdd(e.target.value);
-                  e.target.value = '';
+                  e.target.value = "";
                 }
               }}
             />
@@ -124,7 +128,7 @@ const JobPostingForm = () => {
           <input
             type="date"
             name="endDate"
-            placeholder='Select a Date'
+            placeholder="Select a Date"
             value={formData.endDate}
             onChange={handleChange}
             required

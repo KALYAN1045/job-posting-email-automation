@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import SignUpForm from "./SignUpForm";
@@ -19,17 +19,25 @@ function SignUp() {
   const [isOtpVisible, setIsOtpVisible] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
+  const [isAnimationComplete, setIsAnimationComplete] = useState(false);
 
   const navigate = useNavigate();
 
+  const setVerificationAndNavigate = useCallback(() => {
+    localStorage.setItem("isVerified", "true");
+    localStorage.setItem("userName", formData.name);
+    // Dispatch a custom event to notify App.js about the change
+    window.dispatchEvent(new Event('localStorageChanged'));
+    // Navigate after a short delay to ensure state is updated
+    setTimeout(() => navigate("/main"), 100);
+  }, [formData.name, navigate]);
+
   useEffect(() => {
-    if (isEmailVerified && isPhoneVerified) {
-      setTimeout(() => {
-        localStorage.setItem("isVerified", true);
-        navigate("/main");
-      }, 1700);
+    if (isEmailVerified && isPhoneVerified && isAnimationComplete) {
+      console.log("Both email and phone verified, setting verification...");
+      setVerificationAndNavigate();
     }
-  }, [isEmailVerified, isPhoneVerified, navigate]);
+  }, [isEmailVerified, isPhoneVerified, isAnimationComplete, setVerificationAndNavigate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -94,6 +102,10 @@ function SignUp() {
       );
       console.log(response.data.message);
       setIsPhoneVerified(true);
+      // Start the animation completion timer
+      setTimeout(() => {
+        setIsAnimationComplete(true);
+      }, 2800); // Adjust this time to match your animation duration
     } catch (err) {
       console.error(
         "Error during phone OTP verification:",
@@ -112,7 +124,7 @@ function SignUp() {
             initial={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -100 }}
             animate={{ x: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.1 }}
           >
             <h2>Sign Up</h2>
             <p className="title">Fill in the details to sign up</p>
@@ -132,7 +144,7 @@ function SignUp() {
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.3, delay: 0.3 }}
+            transition={{ duration: 0.1, delay: 0 }}
           >
             <OtpForm
               formData={formData}

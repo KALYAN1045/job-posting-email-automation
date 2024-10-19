@@ -10,7 +10,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-
 // MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI)
@@ -19,6 +18,8 @@ mongoose
 
 // Routes
 const authRoutes = require("./routes/authRoutes");
+const jobRoutes = require("./routes/jobRoutes");
+app.use("/api", jobRoutes);
 app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 5000;

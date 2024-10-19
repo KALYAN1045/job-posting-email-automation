@@ -113,7 +113,7 @@
   margin-right: 10px;
 }
 
-input {
+.register-form-container input {
   flex: 1;
   border: none;
   font-family: "DM Sans", sans-serif;

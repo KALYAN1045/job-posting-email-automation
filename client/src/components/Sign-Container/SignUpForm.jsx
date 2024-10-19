@@ -6,7 +6,7 @@ import Mail from "../../images/Mail icon.png";
 import Phone from "../../images/Phone icon.png";
 import Group from "../../images/Groups icon.png";
 
-const SignUpForm = ({ formData, handleInputChange, handleProceed }) => {
+const SignUpForm = ({ formData, handleInputChange, handleProceed, isLoading }) => {
   return (
     <form onSubmit={handleProceed}>
       <div className="input-group">
@@ -62,7 +62,9 @@ const SignUpForm = ({ formData, handleInputChange, handleProceed }) => {
       </div>
       <TermsAndConditions />
 
-      <button type="submit">Proceed</button>
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? "Loading..." : "Proceed"}
+      </button>
     </form>
   );
 };

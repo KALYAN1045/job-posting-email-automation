@@ -20,6 +20,7 @@ function SignUp() {
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // State for loading
 
   const navigate = useNavigate();
 
@@ -49,6 +50,7 @@ function SignUp() {
 
   const handleProceed = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Set loading to true when OTP request starts
     try {
       const response = await axios.post(
         "http://localhost:5000/api/auth/register",
@@ -68,6 +70,8 @@ function SignUp() {
         err.response ? err.response.data.message : err.message
       );
       alert(err.response.data.message);
+    } finally {
+      setIsLoading(false); // Set loading to false once OTP request completes
     }
   };
 
@@ -132,6 +136,7 @@ function SignUp() {
               formData={formData}
               handleInputChange={handleInputChange}
               handleProceed={handleProceed}
+              isLoading={isLoading} // Pass loading state to SignUpForm
             />
           </motion.div>
         )}

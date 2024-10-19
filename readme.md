@@ -3,9 +3,8 @@
 This is a Node.js and Express.js backend for job posting and email OTP automation. It allows companies to post jobs, register users, and send OTPs via email for user verification. The backend is integrated with MongoDB and Nodemailer for email sending.
 
 # Deployment:
-🔴 Not Recommended: Vercel is takng time to send mails via NodeMailer (Try on your own free time)
+🔴 Not Recommended: Vercel is takng time to send mails via NodeMailer (Try on your own free time) [Deployed Link](https://job-posting-email-automation-58k7-821lfmgy5.vercel.app/)
 
-Link: https://job-posting-email-automation-58k7-821lfmgy5.vercel.app/
 
 ## Features
 - User Registration with Email and Phone OTP Verification

@@ -5,12 +5,10 @@ const sendEmailOtp = require("../utils/sendEmailOtp");
 
 const router = express.Router();
 
-// Route 1: /register (Check if user exists and send OTPs)
 router.post("/register", async (req, res) => {
   const { name, email, phone, companyName, employeeSize } = req.body;
 
   try {
-    // Check if the user exists by email or phone
     const existingUser = await User.findOne({
       $or: [{ email }, { phone }],
     });
@@ -21,11 +19,8 @@ router.post("/register", async (req, res) => {
         .json({ message: "User with this email or phone already exists" });
     }
 
-    // Generate and send Email OTP
     const emailOtp = Math.floor(100000 + Math.random() * 900000).toString();
-    await sendEmailOtp(email, emailOtp);
 
-    // Create a new user with the email OTP and a default phone OTP ("123456")
     const newUser = new User({
       name,
       email,
@@ -33,17 +28,22 @@ router.post("/register", async (req, res) => {
       companyName,
       employeeSize,
       emailOtp,
-      phoneOtp: "123456", // Dummy phone OTP
+      phoneOtp: "123456",
       isEmailVerified: false,
       isPhoneVerified: false,
     });
 
-    // Save the user to the database
     await newUser.save();
+
+    // Send email asynchronously without waiting for it to complete
+    sendEmailOtp(email, emailOtp).catch(error => {
+      console.error("Failed to send email:", error);
+      // Consider implementing a retry mechanism or logging for failed emails
+    });
 
     return res
       .status(200)
-      .json({ message: "Email OTP sent, proceed with email verification" });
+      .json({ message: "User registered. Email OTP will be sent shortly." });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });

@@ -9,12 +9,7 @@ dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 
-const corsOptions = {
-  origin: [process.env.FRONTEND], // Allow your Vercel frontend
-  methods: ["GET", "POST"],
-  credentials: true,
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 // MongoDB connection
 mongoose

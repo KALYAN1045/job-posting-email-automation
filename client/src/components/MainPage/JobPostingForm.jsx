@@ -35,7 +35,10 @@ const JobPostingForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if (formData.candidates.length === 0) {
+      alert("Please add at least one candidate email.");
+      return; // Stop the form submission if no candidates
+    }
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/jobs`,

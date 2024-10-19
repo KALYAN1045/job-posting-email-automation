@@ -27,7 +27,7 @@ function SignUp() {
     localStorage.setItem("isVerified", "true");
     localStorage.setItem("userName", formData.name);
     // Dispatch a custom event to notify App.js about the change
-    window.dispatchEvent(new Event('localStorageChanged'));
+    window.dispatchEvent(new Event("localStorageChanged"));
     // Navigate after a short delay to ensure state is updated
     setTimeout(() => navigate("/main"), 100);
   }, [formData.name, navigate]);
@@ -37,7 +37,12 @@ function SignUp() {
       console.log("Both email and phone verified, setting verification...");
       setVerificationAndNavigate();
     }
-  }, [isEmailVerified, isPhoneVerified, isAnimationComplete, setVerificationAndNavigate]);
+  }, [
+    isEmailVerified,
+    isPhoneVerified,
+    isAnimationComplete,
+    setVerificationAndNavigate,
+  ]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

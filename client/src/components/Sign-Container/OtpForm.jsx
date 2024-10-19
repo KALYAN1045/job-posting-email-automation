@@ -22,7 +22,7 @@ const OtpForm = ({
           iconSrc={Mail}
           className="icon"
           name="emailOtp"
-          placeholder="Email OTP"
+          placeholder="Email OTP (Nodemailer takes time/use 123456)"
           value={formData.emailOtp}
           onChange={handleInputChange}
         />

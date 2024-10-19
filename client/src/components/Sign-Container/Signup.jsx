@@ -1,106 +1,126 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import person from "../../images/Person_icon.png";
-import Mail from "../../images/Mail icon.png";
-import Phone from "../../images/Phone icon.png";
-import Group from "../../images/Groups icon.png";
+import SignUpForm from "./SignUpForm";
+import OtpForm from "./OtpForm";
 import "./Signup.css";
+import axios from "axios";
 
 function SignUp() {
+  const [formData, setFormData] = useState({
+    name: "",
+    phoneNumber: "",
+    companyName: "",
+    email: "",
+    employeeSize: "",
+    emailOtp: "",
+    phoneOtp: "",
+  });
   const [isOtpVisible, setIsOtpVisible] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [isPhoneVerified, setIsPhoneVerified] = useState(false);
 
-  // Handler for form submission (when you click 'Proceed')
-  const handleProceed = (e) => {
-    e.preventDefault();
-    setIsOtpVisible(true); // Trigger OTP form visibility
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  // Handler for OTP verification (dummy function for now)
-  const handleVerifyOtp = () => {
-    // OTP verification logic
+  const handleProceed = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:5000/api/auth/register", {
+        name: formData.name,
+        phone: formData.phoneNumber,
+        companyName: formData.companyName,
+        email: formData.email,
+        employeeSize: formData.employeeSize,
+      });
+      console.log(response.data.message);
+      setIsOtpVisible(true);
+    } catch (err) {
+      console.error(
+        "Error sending OTPs:",
+        err.response ? err.response.data.message : err.message
+      );
+      alert(err.response.data.message);
+    }
+  };
+
+  const handleVerifyEmailOtp = async () => {
+    try {
+      const response = await axios.post("http://localhost:5000/api/auth/verify-email-otp", {
+        email: formData.email,
+        emailOtp: formData.emailOtp,
+      });
+      console.log(response.data.message);
+      setIsEmailVerified(true);
+    } catch (err) {
+      console.error(
+        "Error during email OTP verification:",
+        err.response ? err.response.data.message : err.message
+      );
+      alert(err.response.data.message);
+    }
+  };
+
+  const handleVerifyPhoneOtp = async () => {
+    try {
+      const response = await axios.post("http://localhost:5000/api/auth/verify-phone-otp", {
+        phone: formData.phoneNumber,
+        phoneOtp: formData.phoneOtp,
+      });
+      console.log(response.data.message);
+      setIsPhoneVerified(true);
+    } catch (err) {
+      console.error(
+        "Error during phone OTP verification:",
+        err.response ? err.response.data.message : err.message
+      );
+      alert(err.response.data.message);
+    }
   };
 
   return (
     <div className="register-form-container">
       <AnimatePresence>
-        {/* Sign Up Form */}
-        {!isOtpVisible && (
+        {isOtpVisible && (
           <motion.div
             className="register-form"
             initial={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }} // Slide left and fade out
+            exit={{ opacity: 0, x: -100 }}
             animate={{ x: 0 }}
-            transition={{ duration: 0.3 }} // Speeding up the animation
+            transition={{ duration: 0.3 }}
           >
             <h2>Sign Up</h2>
-            <p className="title">Lorem Ipsum is simply dummy text</p>
-            <form onSubmit={handleProceed}>
-              <div className="input-group">
-                <img src={person} alt="Person Icon" className="icon" />
-                <input type="text" placeholder="Name" />
-              </div>
-              <div className="input-group">
-                <img src={Phone} alt="Phone Icon" className="icon" />
-                <input type="text" placeholder="Phone no." />
-              </div>
-              <div className="input-group">
-                <img src={person} alt="Person Icon" className="icon" />
-                <input type="text" placeholder="Company Name" />
-              </div>
-              <div className="input-group">
-                <img src={Mail} alt="Person Icon" className="icon" />
-                <input type="email" placeholder="Company Email" />
-              </div>
-              <div className="input-group">
-                <img src={Group} alt="Group Icon" className="icon" />
-                <input type="number" placeholder="Employee Size" />
-              </div>
-              <p className="terms">
-                By clicking on proceed you will accept our
-                <br />
-                <a href="#">Terms & Conditions</a>
-              </p>
-              <button type="submit">Proceed</button>
-            </form>
+            <p className="title">Fill in the details to sign up</p>
+            <SignUpForm
+              formData={formData}
+              handleInputChange={handleInputChange}
+              handleProceed={handleProceed}
+            />
           </motion.div>
         )}
       </AnimatePresence>
 
       <AnimatePresence>
-        {/* OTP Form */}
-        {isOtpVisible && (
+        {!isOtpVisible && (
           <motion.div
             className="otp-form"
-            initial={{ opacity: 0, x: 100 }} // Start from right and invisible
-            animate={{ opacity: 1, x: 0 }}  // Slide in from right
-            exit={{ opacity: 0, x: -100 }}  // Exit to left
-            transition={{
-              duration: 0.3, // Speed up the animation
-              delay: 0.3, // Delay the start of OTP form to wait for Sign Up form to exit
-            }}
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -100 }}
+            transition={{ duration: 0.3, delay: 0.3 }}
           >
-            <h2>OTP Verification</h2>
-            <p className="title">Please enter the OTP sent to your email and phone</p>
-            <div className="input-group">
-              <img src={Mail} alt="Mail Icon" className="icon" />
-              <input
-                type="text"
-                name="emailOtp"
-                placeholder="Email OTP"
-              />
-            </div>
-            <button onClick={handleVerifyOtp}>Verify Email</button>
-            <br />
-            <br />
-            <div className="input-group">
-              <img src={Phone} alt="Phone Icon" className="icon" />
-              <input
-                type="text"
-                name="phoneOtp"
-                placeholder="Phone OTP"
-              />
-            </div>
-            <button onClick={handleVerifyOtp}>Verify Phone</button>
+            <OtpForm
+              formData={formData}
+              handleInputChange={handleInputChange}
+              isEmailVerified={isEmailVerified}
+              isPhoneVerified={isPhoneVerified}
+              handleVerifyEmailOtp={handleVerifyEmailOtp}
+              handleVerifyPhoneOtp={handleVerifyPhoneOtp}
+            />
           </motion.div>
         )}
       </AnimatePresence>
@@ -109,4 +129,3 @@ function SignUp() {
 }
 
 export default SignUp;
-

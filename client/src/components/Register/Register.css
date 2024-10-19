@@ -44,6 +44,8 @@
   line-height: 1.6;
   font-size: medium;
   font-weight: 450;
+  justify-content: center;
+  align-items: center;
   margin: 0;
   max-width: 80%;
 }

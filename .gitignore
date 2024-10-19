@@ -1,0 +1,11 @@
+# In your .gitignore
+/path-to-your-firebase-adminsdk.json
+
+.env
+
+# ignore node/grunt dependency directories
+node_modules/
+
+# Ignore build directories.
+/build
+/dist

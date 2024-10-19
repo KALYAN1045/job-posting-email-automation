@@ -4,6 +4,7 @@ This is a Node.js and Express.js backend for job posting and email OTP automatio
 
 # Deployment:
 🔴 Not Recommended: Vercel is takng time to send mails via NodeMailer (Try on your own free time)
+
 Link: https://job-posting-email-automation-58k7-821lfmgy5.vercel.app/
 
 ## Features

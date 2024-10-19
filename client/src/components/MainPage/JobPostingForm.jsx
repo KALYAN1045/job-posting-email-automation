@@ -39,6 +39,14 @@ const JobPostingForm = () => {
       alert("Please add at least one candidate email.");
       return; // Stop the form submission if no candidates
     }
+
+    const currentDate = new Date();
+    const selectedEndDate = new Date(formData.endDate);
+  
+    if (!formData.endDate || selectedEndDate < currentDate) {
+      alert("Please select a valid end date. The date cannot be in the past.");
+      return;
+    }
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/jobs`,

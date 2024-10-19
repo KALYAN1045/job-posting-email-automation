@@ -38,7 +38,7 @@ const OtpForm = ({
           iconSrc={Phone}
           className="icon"
           name="phoneOtp"
-          placeholder="Phone OTP"
+          placeholder="Phone OTP (use 123456)"
           value={formData.phoneOtp}
           onChange={handleInputChange}
         />

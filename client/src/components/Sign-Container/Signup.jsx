@@ -73,10 +73,6 @@ function SignUp() {
 
   const handleVerifyEmailOtp = async () => {
     try {
-      if(formData.emailOtp == "123456"){
-        setIsEmailVerified(true);
-        return;
-      }
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/auth/verify-email-otp`,
         {

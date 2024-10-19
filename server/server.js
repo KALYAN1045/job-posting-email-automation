@@ -3,8 +3,6 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
-const admin = require("firebase-admin");
-const serviceAccount = require("./job-automate-firebase-adminsdk-290oh-518b71edbc.json"); // Path to Firebase service account key
 
 dotenv.config();
 
@@ -12,10 +10,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-// Initialize Firebase Admin SDK
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
 
 // MongoDB connection
 mongoose

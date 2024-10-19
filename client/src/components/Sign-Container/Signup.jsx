@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import SignUpForm from "./SignUpForm";
 import OtpForm from "./OtpForm";
@@ -19,6 +20,17 @@ function SignUp() {
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isEmailVerified && isPhoneVerified) {
+      setTimeout(() => {
+        localStorage.setItem("isVerified", true);
+        navigate("/main");
+      }, 1700);
+    }
+  }, [isEmailVerified, isPhoneVerified, navigate]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -30,13 +42,16 @@ function SignUp() {
   const handleProceed = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/register", {
-        name: formData.name,
-        phone: formData.phoneNumber,
-        companyName: formData.companyName,
-        email: formData.email,
-        employeeSize: formData.employeeSize,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        {
+          name: formData.name,
+          phone: formData.phoneNumber,
+          companyName: formData.companyName,
+          email: formData.email,
+          employeeSize: formData.employeeSize,
+        }
+      );
       console.log(response.data.message);
       setIsOtpVisible(true);
     } catch (err) {
@@ -50,10 +65,13 @@ function SignUp() {
 
   const handleVerifyEmailOtp = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/verify-email-otp", {
-        email: formData.email,
-        emailOtp: formData.emailOtp,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/verify-email-otp",
+        {
+          email: formData.email,
+          emailOtp: formData.emailOtp,
+        }
+      );
       console.log(response.data.message);
       setIsEmailVerified(true);
     } catch (err) {
@@ -67,10 +85,13 @@ function SignUp() {
 
   const handleVerifyPhoneOtp = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/verify-phone-otp", {
-        phone: formData.phoneNumber,
-        phoneOtp: formData.phoneOtp,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/verify-phone-otp",
+        {
+          phone: formData.phoneNumber,
+          phoneOtp: formData.phoneOtp,
+        }
+      );
       console.log(response.data.message);
       setIsPhoneVerified(true);
     } catch (err) {
@@ -85,7 +106,7 @@ function SignUp() {
   return (
     <div className="register-form-container">
       <AnimatePresence>
-        {isOtpVisible && (
+        {!isOtpVisible && (
           <motion.div
             className="register-form"
             initial={{ opacity: 1, x: 0 }}
@@ -105,7 +126,7 @@ function SignUp() {
       </AnimatePresence>
 
       <AnimatePresence>
-        {!isOtpVisible && (
+        {isOtpVisible && (
           <motion.div
             className="otp-form"
             initial={{ opacity: 0, x: 100 }}
